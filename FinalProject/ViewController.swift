@@ -16,7 +16,8 @@ class ViewController: UIViewController {
     var operation = 0
     var equationSoFar:Double = 0
     var enteredCounter = 0;
-    
+    var cleared = true
+   // var isNeg = false
     @IBOutlet weak var label: UILabel!
     
     @IBAction func Numbers(_ sender: UIButton) {
@@ -43,10 +44,29 @@ class ViewController: UIViewController {
             label.text = label.text! + "."}
     }
     
+    @IBAction func makeNeg(_ sender: UIButton) {
+        if cleared == true {
+            label.text = "-"
+            performing = false
+            cleared = false
+            /*if isNeg == false{
+                isNeg = true
+            }else {
+                isNeg = false
+            }
+            */
+        }else{
+            numbOnScreen = numbOnScreen * -1
+            label.text = String(numbOnScreen)
+            
+        }
+    }
     
     @IBAction func buttons(_ sender: UIButton) {
         if label.text != "" && sender.tag != 11 && sender.tag != 16 && sender.tag != 20{
-            
+           /* if isNeg == true{
+                numbOnScreen = numbOnScreen * -1
+            } */
             if enteredCounter >= 2{
                 switch operation{
                 case 12:
@@ -97,6 +117,8 @@ class ViewController: UIViewController {
             performing = true
            
             enteredCounter = enteredCounter + 1
+            
+            //isNeg = false
     
         }
         else if sender.tag == 16{
@@ -128,15 +150,19 @@ class ViewController: UIViewController {
                 }
             }
             label.text = String(equationSoFar)
+            //isNeg = false
         }
         else if sender.tag == 11 {
             label.text = ""
+           // isNeg = false
         }
         else if sender.tag == 20 {
             label.text = ""
             storeNumb = 0
             equationSoFar = 0
             enteredCounter = 0
+            cleared = true
+           // isNeg = false
         }else{
             label.text = "enter #"
         }
