@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     var storeNumb:Double = 0;
     var performing = false
     var operation = 0
+    var equationSoFar:Double = 0
+    var enteredCounter = 0;
     
     @IBOutlet weak var label: UILabel!
     
@@ -33,9 +35,52 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func decimal(_ sender: UIButton) {
+        if performing == true {
+            label.text = "."
+            performing = false
+        }else{
+            label.text = label.text! + "."}
+    }
+    
+    
     @IBAction func buttons(_ sender: UIButton) {
-        if label.text != "" && sender.tag != 11 && sender.tag != 16{
-            storeNumb = numbOnScreen
+        if label.text != "" && sender.tag != 11 && sender.tag != 16 && sender.tag != 20{
+            
+            if enteredCounter >= 2{
+                switch operation{
+                case 12:
+                    equationSoFar = equationSoFar / numbOnScreen
+                case 13:
+                    equationSoFar = equationSoFar * numbOnScreen
+                case 14:
+                    equationSoFar = equationSoFar - numbOnScreen
+                case 15:
+                    equationSoFar = equationSoFar + numbOnScreen
+                default:
+                    numbOnScreen = storeNumb
+                }
+                operation = sender.tag
+                
+            }else if enteredCounter == 1{
+                
+                switch operation{
+                case 12:
+                    equationSoFar = storeNumb / numbOnScreen
+                case 13:
+                    equationSoFar = storeNumb * numbOnScreen
+                case 14:
+                    equationSoFar = storeNumb - numbOnScreen
+                case 15:
+                    equationSoFar = storeNumb + numbOnScreen
+                default:
+                    numbOnScreen = storeNumb
+                }
+                operation = sender.tag
+            }else {
+                storeNumb = numbOnScreen
+                operation = sender.tag
+            }
             switch sender.tag {
             case 12://Divide
                 label.text = "/"
@@ -48,27 +93,52 @@ class ViewController: UIViewController {
             default:
                 label.text = ""
             }
-            operation = sender.tag
+            
             performing = true
+           
+            enteredCounter = enteredCounter + 1
+    
         }
         else if sender.tag == 16{
+            if enteredCounter == 1{
             switch operation{
             case 12:
-                numbOnScreen = storeNumb / numbOnScreen
+                equationSoFar = storeNumb / numbOnScreen
             case 13:
-                numbOnScreen = storeNumb * numbOnScreen
+                equationSoFar = storeNumb * numbOnScreen
             case 14:
-                numbOnScreen = storeNumb - numbOnScreen
+                equationSoFar = storeNumb - numbOnScreen
             case 15:
-                numbOnScreen = storeNumb + numbOnScreen
+                equationSoFar = storeNumb + numbOnScreen
             default:
                 numbOnScreen = storeNumb
             }
-            label.text = String(numbOnScreen)
-            
+            }else {
+                switch operation{
+                case 12:
+                    equationSoFar = equationSoFar / numbOnScreen
+                case 13:
+                    equationSoFar = equationSoFar * numbOnScreen
+                case 14:
+                    equationSoFar = equationSoFar - numbOnScreen
+                case 15:
+                    equationSoFar = equationSoFar + numbOnScreen
+                default:
+                    numbOnScreen = storeNumb
+                }
+            }
+            label.text = String(equationSoFar)
         }
-        else {
+        else if sender.tag == 11 {
             label.text = ""
+        }
+        else if sender.tag == 20 {
+            label.text = ""
+            storeNumb = 0
+            equationSoFar = 0
+            enteredCounter = 0
+        }else{
+            label.text = "enter #"
         }
         
     }
